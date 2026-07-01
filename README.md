@@ -4,13 +4,13 @@ A Python-based Deep Learning research project template and codebase for the **Da
 
 ---
 
-## 📖 Problem Statement: Multilingual and Code-Mixed Compression
+## 📖 Project Overview: Multilingual and Code-Mixed Text Compression
 
-In the context of token classification and text compression (e.g., LLMLingua-2), models often utilize multilingual feature encoders (such as `xlm-roberta-large` and `multilingual-BERT`). Despite utilizing these multilingual architectures, they are typically trained on mono-lingual corpora (e.g., MeetingBank in English).
+This project explores the adaptation of token-classification-based text compression (similar to LLMLingua-2) for multilingual and code-mixed conversational transcripts. 
 
-* **The Pivot:** This project exploits the untapped multilingual capacity of baseline models by training a token classifier to handle code-switched (code-mixed) text. By distilling a dataset that blends English, Hindi, and Bengali, we test if the token classification strategy holds up when linguistic redundancy is not bound by a single language's grammatical rules.
-* **The Differentiation:** Syntactic redundancy behaves differently in code-mixed languages compared to standard monolingual text (e.g., filler words and structural repetition in Hindi-English conversational transcripts). Showing that a small token classifier can learn these redundancy patterns without losing essential meaning is a significant asset for localization pipelines and regional NLP applications.
-* **Suitable Datasets:** [SAIL (Sentiment Analysis of Indian Languages)](https://github.com/hulas/SAIL) or conversational datasets like [L3Cube-HingCorp](https://github.com/l3cube-pune/HingLish). We apply a GPT-4 data distillation process to these transcripts to create our own localized ground-truth dataset for the token classifier.
+While state-of-the-art token classification compressors utilize multilingual feature encoders (such as `xlm-roberta-large` and `multilingual-BERT`), they are generally trained on monolingual datasets. We pivot to train a token classifier specifically on code-switched text (blending English, Hindi, and Bengali) to evaluate whether token classification compression holds up when syntactic redundancy is not bound by a single language's grammatical rules.
+
+Since syntactic redundancy, filler words, and structural repetitions behave differently in code-mixed languages compared to standard monolingual texts, demonstrating that a small token classifier can learn these patterns without losing essential semantic meaning is highly valuable for localization pipelines and regional NLP applications.
 
 ---
 
