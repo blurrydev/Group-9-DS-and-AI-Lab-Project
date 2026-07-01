@@ -99,7 +99,8 @@ secrets.yaml
 # Deep Learning Research - Datasets and Raw Data
 # ==============================================================================
 # Standard directories for holding large training/testing data
-data/
+# (We allow data/ to be tracked so team members can share distilled text/JSON datasets)
+# data/
 dataset/
 datasets/
 raw_data/
@@ -111,14 +112,13 @@ raw_data/
 *.tar.gz
 *.rar
 *.7z
-*.csv
-*.tsv
 *.h5
 *.hdf5
 *.npy
 *.npz
 *.parquet
-*.jsonl
+# Note: csv, tsv, json, and jsonl files in the data/ directory are permitted for 
+# sharing text-based distilled code-switched datasets. Avoid committing large (>50MB) datasets.
 
 # ==============================================================================
 # Deep Learning Research - Model Checkpoints & Weights
