@@ -1,6 +1,6 @@
 # Group 9: Data Science and AI Lab Project
 
-A Python-based Deep Learning research project template and codebase for the **Data Science & AI Labs** course at **IIT Madras**.
+A Python-based Deep Learning research project codebase for the **Data Science & AI Labs** course at **IIT Madras**.
 
 ---
 
