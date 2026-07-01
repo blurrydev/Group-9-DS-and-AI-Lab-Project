@@ -12,6 +12,8 @@ While state-of-the-art token classification compressors utilize multilingual fea
 
 Since syntactic redundancy, filler words, and structural repetitions behave differently in code-mixed languages compared to standard monolingual texts, demonstrating that a small token classifier can learn these patterns without losing essential semantic meaning is highly valuable for localization pipelines and regional NLP applications.
 
+For a detailed breakdown of the challenges, limitations of current state-of-the-art methods, and our proposed query-aware solution, please refer to the full [problem_statement.md](problem_statement.md).
+
 ---
 
 ## 🚀 Getting Started
@@ -108,12 +110,13 @@ If you prefer not to use `uv`, you can use standard Python toolchains.
 ## 📁 Project Structure
 
 ```text
-├── data/               # Project datasets (shared distilled text datasets go here)
-├── .gitignore          # Tailored gitignore for Python, IDEs, and Deep Learning (weights/data/logs)
-├── pyproject.toml      # Project metadata and dependencies (PEP 621 compliant)
-├── README.md           # Setup and developer guide (this file)
-├── main.py             # Entrypoint script
-└── .python-version     # Python version lock file
+├── data/                 # Project datasets (shared distilled text datasets go here)
+├── .gitignore            # Tailored gitignore for Python, IDEs, and Deep Learning (weights/data/logs)
+├── pyproject.toml        # Project metadata and dependencies (PEP 621 compliant)
+├── README.md             # Setup and developer guide (this file)
+├── problem_statement.md  # Detailed project problem statement
+├── main.py               # Entrypoint script
+└── .python-version       # Python version lock file
 ```
 
 ---
