@@ -14,6 +14,7 @@ While state-of-the-art prompt compressors like LLMLingua-2 have successfully red
 * **End-Users:** Non-English speakers relying on localized AI systems, search engines, and automated regional support bots.
 * **AI Developers & Engineers:** Teams building RAG pipelines for regional demographics who need to optimize latency and API costs.
 * **Academic/Project Evaluators:** Course instructors, teaching assistants, and peers evaluating the technical rigor of the submission.
+* **Data Annotators & Linguists:** Experts who evaluate linguistic integrity and verify that compressed text preserves correct grammatical syntax.
 
 **Objectives**
 1. **Compression Efficiency:** Achieve an average token compression ratio of 2x to 5x on Hindi RAG contexts without corrupting the native script.
