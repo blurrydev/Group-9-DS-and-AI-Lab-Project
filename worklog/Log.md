@@ -41,9 +41,9 @@ This folder contains the official record of work, task allocation, and peer ackn
 ### Peer Acknowledgment Matrix
 | Task Owner | Anurag M. | Bhavya J. | Chirag R. | Hitesh | Hitesh B. | Soumyabrata M. |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| **ANURAG MONDAL** | — | [ ] | [ ] | [ ] | [ ] | [ ] |
-| **BHAVYA JAIN** | [x] | — | [ ] | [ ] | [ ] | [ ] |
+| **ANURAG MONDAL** | — | [ ] | [x] | [ ] | [ ] | [ ] |
+| **BHAVYA JAIN** | [x] | — | [x] | [ ] | [ ] | [ ] |
 | **D CHIRAG RAO** | [x] | [ ] | — | [ ] | [ ] | [ ] |
-| **HITESH** | [x] | [ ] | [ ] | — | [ ] | [ ] |
-| **HITESH BINJRAWAT** | [x] | [ ] | [ ] | [ ] | — | [ ] |
-| **SOUMYABRATA MAHAPATRA** | [x] | [ ] | [ ] | [ ] | [ ] | — |
+| **HITESH** | [x] | [ ] | [x] | — | [ ] | [ ] |
+| **HITESH BINJRAWAT** | [x] | [ ] | [x] | [ ] | — | [ ] |
+| **SOUMYABRATA MAHAPATRA** | [x] | [ ] | [x] | [ ] | [ ] | — |
