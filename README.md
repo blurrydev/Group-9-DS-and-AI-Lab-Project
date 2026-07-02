@@ -111,6 +111,7 @@ If you prefer not to use `uv`, you can use standard Python toolchains.
 
 ```text
 ├── data/                 # Project datasets (shared distilled text datasets go here)
+├── worklog/              # Project worklog and peer acknowledgment folder
 ├── .gitignore            # Tailored gitignore for Python, IDEs, and Deep Learning (weights/data/logs)
 ├── pyproject.toml        # Project metadata and dependencies (PEP 621 compliant)
 ├── README.md             # Setup and developer guide (this file)
@@ -118,6 +119,12 @@ If you prefer not to use `uv`, you can use standard Python toolchains.
 ├── main.py               # Entrypoint script
 └── .python-version       # Python version lock file
 ```
+
+---
+
+## 📝 Worklog & Peer Acknowledgment
+
+We maintain a project worklog and peer review acknowledgment matrix under [worklog/](file:///C:/Users/NTBI45229/OneDrive%20-%20Nissan%20Motor%20Corporation/IITM/Projects/Group-9-DS-and-AI-Lab-Project/worklog). All group members are required to log their contributions and review their peers' work at the end of each milestone.
 
 ---
 
