@@ -42,12 +42,18 @@ def align_tokens(original_text, compressed_text):
     return orig_tokens, labels
 
 def run_pipeline():
-    api_key = os.getenv("NVIDIA_API_KEY")
-    if not api_key:
-        raise ValueError("ERROR: NVIDIA_API_KEY environment variable not set!")
+    # 1. Load the variables from the .env file
+    load_dotenv()
+    
+    api_key = os.getenv("API_KEY")
+    base_url = os.getenv("BASE_URL")
+    
+    if not api_key or not base_url:
+        raise ValueError("ERROR: Missing API_KEY or BASE_URL in .env file!")
 
+    # 2. Inject the variables into the client
     client = OpenAI(
-        base_url="https://integrate.api.nvidia.com/v1",
+        base_url=base_url,
         api_key=api_key,
         timeout=60.0
     )
