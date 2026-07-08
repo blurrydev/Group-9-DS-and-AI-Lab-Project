@@ -42,7 +42,7 @@ def align_tokens(original_text, compressed_text):
     return orig_tokens, labels
 
 def run_pipeline():
-    # 1. Load the variables from the .env file
+    
     load_dotenv()
     
     api_key = os.getenv("API_KEY")
@@ -68,7 +68,7 @@ def run_pipeline():
     with open(raw_data_path, "r", encoding="utf-8") as f:
         raw_items = json.load(f)
 
-    # State Management: Check for existing progress
+    
     processed_count = 0
     if os.path.exists(output_path):
         with open(output_path, "r", encoding="utf-8") as f:
@@ -99,7 +99,7 @@ def run_pipeline():
                     }
                     
                     f.write(json.dumps(output_record, ensure_ascii=False) + "\n")
-                    f.flush() # Forces immediate write to disk
+                    f.flush() 
                     success = True
                     break
                     
