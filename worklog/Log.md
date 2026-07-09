@@ -47,3 +47,36 @@ This folder contains the official record of work, task allocation, and peer ackn
 | **HITESH** | [x] | [x] | [x] | — | [x] | [x] |
 | **HITESH BINJRAWAT** | [x] | [x] | [x] | [x] | — | [x] |
 | **SOUMYABRATA MAHAPATRA** | [x] | [x] | [x] | [x] | [x] | — |
+
+---
+
+## 📅 Milestone 2: Dataset Preparation & Distillation
+
+### Requirements
+* Identify and verify data sources, ownership, and usage constraints.
+* Describe dataset feature distribution, class balance, and size.
+* Handle missing values, inconsistencies, and noise through automated pipeline error handling.
+* Generate a synthetic distillation dataset using an LLM teacher and justify prompt design choices.
+* Establish precise token alignment connections between the generative output and token classification labels.
+* Define the strategy for training/validation splits (80/20) and prevent data leakage.
+* Document all preprocessing and environment setups to ensure reproducibility.
+
+### Task Allocation & Work Done
+| Member | Specific Tasks Completed | Deliverable |
+| :--- | :--- | :--- |
+| **ANURAG MONDAL** | Engineered the fault-tolerant LLM distillation pipeline framework, managed API orchestration, state management, and exponential backoff strategies (`distill.py`). | [distill.py](../distill.py) |
+| **BHAVYA JAIN** | Handled raw data extraction, Parquet parsing, and ingestion preprocessing from Hugging Face (`fetch_data.py`). | [fetch_data.py](../fetch_data.py) |
+| **D CHIRAG RAO** | Developed the word-to-token text alignment algorithm and binary mapping logic for token classification. | [Milestone 2 Report](../Milestone%20Files/Milestone%202/Milestone_2_Report.md) |
+| **HITESH** | Engineered the exploratory data analysis (EDA) suite, calculating validation metrics, compression ratios (96%), and retention accuracy (`validate_data.py`). | [validate_data.py](../validate_data.py) |
+| **HITESH BINJRAWAT** | Managed environment isolation, `.env` configuration security, and repository structure best practices. | [README.md](../README.md) |
+| **SOUMYABRATA MAHAPATRA** | Authored the Milestone 2 technical report, compiled dataset metrics, and formatted presentation deliverables. | [Milestone 2 Report](../Milestone%20Files/Milestone%202/Milestone_2_Report.md) |
+
+### Peer Acknowledgment Matrix
+| Task Owner | Anurag M. | Bhavya J. | Chirag R. | Hitesh | Hitesh B. | Soumyabrata M. |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| **ANURAG MONDAL** | — | [ ] | [ ] | [ ] | [ ] | [ ] |
+| **BHAVYA JAIN** | [x] | — | [ ] | [ ] | [ ] | [ ] |
+| **D CHIRAG RAO** | [x] | [ ] | — | [ ] | [ ] | [ ] |
+| **HITESH** | [x] | [] | [ ] | — | [ ] | [ ] |
+| **HITESH BINJRAWAT** | [x] | [ ] | [ ] | [ ] | — | [ ] |
+| **SOUMYABRATA MAHAPATRA** | [x] | [ ] | [ ] | [ ] | [ ] | — |
