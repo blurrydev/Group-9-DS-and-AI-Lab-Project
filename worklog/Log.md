@@ -77,6 +77,6 @@ This folder contains the official record of work, task allocation, and peer ackn
 | **ANURAG MONDAL** | — | [x] | [x] | [ ] | [x] | [ ] |
 | **BHAVYA JAIN** | [x] | — | [x] | [ ] | [x] | [ ] |
 | **D CHIRAG RAO** | [x] | [x] | — | [ ] | [x] | [ ] |
-| **HITESH** | [x] | [x] | [x] | — | [ ] | [x] |
+| **HITESH** | [x] | [x] | [x] | — | [x] | [] |
 | **HITESH BINJRAWAT** | [x] | [x] | [x] | [ ] | — | [ ] |
 | **SOUMYABRATA MAHAPATRA** | [x] | [x] | [x] | [ ] | [x] | — |
