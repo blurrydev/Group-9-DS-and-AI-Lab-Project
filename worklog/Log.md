@@ -85,6 +85,24 @@ This folder contains the official record of work, task allocation, and peer ackn
 
 ## 📅 Milestone 3:
 
+### Requirements
+* 
+* 
+* 
+* 
+* 
+* 
+
+### Task Allocation & Work Done
+| Member | Specific Tasks Completed | Deliverable |
+| :--- | :--- | :--- |
+| **ANURAG MONDAL** |  |  |
+| **BHAVYA JAIN** |  |  |
+| **D CHIRAG RAO** |  |  |
+| **HITESH** |  |  |
+| **HITESH BINJRAWAT** |  |  |
+| **SOUMYABRATA MAHAPATRA** |  |  |
+  
 ### Peer Acknowledgment Matrix
 | Task Owner | Anurag M. | Bhavya J. | Chirag R. | Hitesh | Hitesh B. | Soumyabrata M. |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
