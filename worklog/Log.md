@@ -83,7 +83,7 @@ This folder contains the official record of work, task allocation, and peer ackn
 
 ---
 
-## 📅 Milestone 3:
+## 📅 Milestone 3: Model Architecture & Pipeline Verification
 
 ### Requirements
 * 
