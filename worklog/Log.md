@@ -86,29 +86,31 @@ This folder contains the official record of work, task allocation, and peer ackn
 ## 📅 Milestone 3: Model Architecture & Pipeline Verification
 
 ### Requirements
-* 
-* 
-* 
-* 
-* 
-* 
+* Document the dataset directory structure, including raw and processed data along with training, validation, and test splits.
+* Describe all preprocessing steps applied to the dataset prior to training, including task-specific transformations.
+* Explain the model architecture by highlighting its major components and their interactions.
+* Create a diagram illustrating the complete data flow from raw input to the final model output.
+* Specify how the processed data conforms to the model's expected input format, including dimensions, tensor structures, and other required specifications.
+* Justify the choice of the model architecture by discussing its strengths, limitations, and comparison with alternative approaches.
+* Implement and validate a small-scale end-to-end pipeline using a subset of the dataset to verify workflow integration.
+* Present sample model outputs and document the loss functions and evaluation metrics used to assess model performance. 
 
 ### Task Allocation & Work Done
 | Member | Specific Tasks Completed | Deliverable |
 | :--- | :--- | :--- |
-| **ANURAG MONDAL** |  |  |
-| **BHAVYA JAIN** |  |  |
-| **D CHIRAG RAO** |  |  |
-| **HITESH** |  |  |
-| **HITESH BINJRAWAT** |  |  |
-| **SOUMYABRATA MAHAPATRA** |  |  |
+| **ANURAG MONDAL** | Documented the dataset folder structure (raw, processed, train/validation/test splits) and explained all preprocessing steps applied before training. |  |
+| **BHAVYA JAIN** | Justified the choice of model architecture by discussing its strengths, limitations, and comparison with alternative approaches. |  |
+| **D CHIRAG RAO** | Presented sample model outputs and documented the loss functions and evaluation metrics used to assess model performance. |  |
+| **HITESH** | Described the processed data format expected by the model, including input shapes, tensor dimensions, and embedding/token specifications. |  |
+| **HITESH BINJRAWAT** | Explained the model architecture and created a data-flow diagram showing how inputs are transformed into predictions. |  |
+| **SOUMYABRATA MAHAPATRA** | Implemented and validated a small-scale end-to-end pipeline to ensure all workflow components function correctly. |  |
   
 ### Peer Acknowledgment Matrix
 | Task Owner | Anurag M. | Bhavya J. | Chirag R. | Hitesh | Hitesh B. | Soumyabrata M. |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| **ANURAG MONDAL** | [x] | [x] | [x] | [x] | [x] | [x] |
-| **BHAVYA JAIN** | [x] | [x] | [x] | [x] | [x] | [x] |
-| **D CHIRAG RAO** | [x] | [x] | [x] | [x] | [x] | [x] |
-| **HITESH** | [x] | [x] | [x] | [x] | [x] | [x] |
-| **HITESH BINJRAWAT** | [x] | [x] | [x] | [x] | [x] | [x] |
-| **SOUMYABRATA MAHAPATRA** | [x] | [x] | [x] | [x] | [x] | [x] |
+| **ANURAG MONDAL** | [—] | [] | [x] | [] | [] | [] |
+| **BHAVYA JAIN** | [] | [—] | [x] | [] | [] | [] |
+| **D CHIRAG RAO** | [] | [] | [—] | [] | [] | [] |
+| **HITESH** | [] | [] | [x] | [—] | [] | [] |
+| **HITESH BINJRAWAT** | [] | [] | [x] | [] | [—] | [] |
+| **SOUMYABRATA MAHAPATRA** | [] | [] | [x] | [] | [] | [—] |
