@@ -98,12 +98,12 @@ This folder contains the official record of work, task allocation, and peer ackn
 ### Task Allocation & Work Done
 | Member | Specific Tasks Completed | Deliverable |
 | :--- | :--- | :--- |
-| **ANURAG MONDAL** | Documented the dataset folder structure (raw, processed, train/validation/test splits) and explained all preprocessing steps applied before training. |  |
-| **BHAVYA JAIN** | Justified the choice of model architecture by discussing its strengths, limitations, and comparison with alternative approaches. |  |
-| **D CHIRAG RAO** | Presented sample model outputs and documented the loss functions and evaluation metrics used to assess model performance. |  |
-| **HITESH** | Described the processed data format expected by the model, including input shapes, tensor dimensions, and embedding/token specifications. |  |
-| **HITESH BINJRAWAT** | Explained the model architecture and created a data-flow diagram showing how inputs are transformed into predictions. |  |
-| **SOUMYABRATA MAHAPATRA** | Implemented and validated a small-scale end-to-end pipeline to ensure all workflow components function correctly. |  |
+| **ANURAG MONDAL** | Documented the dataset folder structure (raw, processed, train/validation/test splits) and explained all preprocessing steps applied before training. | [Milestone_3_Report.md](../Milestone%20Files/Milestone%203/Milestone_3_Report.md) |
+| **BHAVYA JAIN** | Justified the choice of model architecture by discussing its strengths, limitations, and comparison with alternative approaches. | [Milestone_3_Report.md](../Milestone%20Files/Milestone%203/Milestone_3_Report.md) |
+| **D CHIRAG RAO** | Presented sample model outputs and documented the loss functions and evaluation metrics used to assess model performance. | [Milestone_3_Report.md](../Milestone%20Files/Milestone%203/Milestone_3_Report.md) |
+| **HITESH** | Described the processed data format expected by the model, including input shapes, tensor dimensions, and embedding/token specifications. | [Milestone_3_Report.md](../Milestone%20Files/Milestone%203/Milestone_3_Report.md) |
+| **HITESH BINJRAWAT** | Explained the model architecture and created a data-flow diagram showing how inputs are transformed into predictions. | [Milestone_3_Report.md](../Milestone%20Files/Milestone%203/Milestone_3_Report.md) |
+| **SOUMYABRATA MAHAPATRA** | Implemented and validated a small-scale end-to-end pipeline to ensure all workflow components function correctly. | [pipeline_test.py](../pipeline_test.py) |
   
 ### Peer Acknowledgment Matrix
 | Task Owner | Anurag M. | Bhavya J. | Chirag R. | Hitesh | Hitesh B. | Soumyabrata M. |
