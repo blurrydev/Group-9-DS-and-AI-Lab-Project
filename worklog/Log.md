@@ -114,3 +114,40 @@ This folder contains the official record of work, task allocation, and peer ackn
 | **HITESH** | [x] | [x] | [x] | — | [x] | [x] |
 | **HITESH BINJRAWAT** | [x] | [x] | [x] | [x] | — | [x] |
 | **SOUMYABRATA MAHAPATRA** | [x] | [x] | [x] | [x] | [x] | — |
+
+---
+
+## 📅 Milestone 4: Model Training, Fine-Tuning & Empirical Evaluation
+
+### Requirements & Lead
+* **Milestone Lead:** **ANURAG MONDAL**
+* **Deadline:** 30 July 2026
+* Briefly describe the datasets used and the necessary preprocessing (including generation of additional Indic supervision via 3-stage XL-Sum distillation).
+* Provide a concise recap of the model architecture with key components and layers.
+* Specify full training configuration (loss functions, evaluation metrics, optimizers, learning rate, batch size, number of epochs, hardware requirements, training strategies).
+* Describe hyperparameter experiments with performance comparison tables across settings.
+* Describe generalization and training stability techniques and their impact.
+* Provide quantitative (Accuracy: 76.03%, Recall: 80.08%, F1: 62.50%) and qualitative results with sample compressed output.
+* List generated artifacts (checkpoints, metrics, logs, notebooks, plots).
+* Discuss key findings from training (what worked, what did not perform as expected, bottlenecks, plans for improvement).
+
+### Task Allocation & Work Done
+| Member | Specific Tasks Completed | Deliverable |
+| :--- | :--- | :--- |
+| **ANURAG MONDAL** (Lead) | Led the team for Milestone 4; configured full training pipeline, hyperparameter setup, AdamW optimizer, FP16 mixed precision, and fine-tuned XLM-RoBERTa model on dual Tesla T4 GPUs (`train-xlmr-llmlingua-indic.ipynb`). | [train-xlmr-llmlingua-indic.ipynb](../notebooks/train-xlmr-llmlingua-indic.ipynb) / [Milestone_4_Report.md](../Milestone%20Files/Milestone%204/Milestone_4_Report.md) |
+| **BHAVYA JAIN** | Co-managed model training and fine-tuning execution, gradient checkpointing configuration, dynamic collator setup, and model checkpoint saving strategies. | [train-xlmr-llmlingua-indic.ipynb](../notebooks/train-xlmr-llmlingua-indic.ipynb) / [Milestone_4_Report.md](../Milestone%20Files/Milestone%204/Milestone_4_Report.md) |
+| **D CHIRAG RAO** | Co-led additional data collection & distillation; processed multi-stage XL-Sum Indic QA data distillation and subword alignment splitting (`PreProcessing.ipynb`). | [PreProcessing.ipynb](../notebooks/PreProcessing.ipynb) / [Milestone_4_Report.md](../Milestone%20Files/Milestone%204/Milestone_4_Report.md) |
+| **HITESH** | Co-led data collection & distillation pipeline; verified dataset split balance (1609 train / 201 val / 202 test) and aligned token-level labels with sentencepiece BPE tokens. | [PreProcessing.ipynb](../notebooks/PreProcessing.ipynb) / [Milestone_4_Report.md](../Milestone%20Files/Milestone%204/Milestone_4_Report.md) |
+| **HITESH BINJRAWAT** | Co-analyzed key findings and qualitative output; evaluated confusion matrix, precision-recall trade-offs, and sample compressed text quality. | [Milestone_4_Report.md](../Milestone%20Files/Milestone%204/Milestone_4_Report.md) |
+| **SOUMYABRATA MAHAPATRA** | Co-conducted quantitative analysis of training results across 10 epochs; analyzed training loss vs eval F1 trajectory, metrics logging, and artifact generation. | [Milestone_4_Report.md](../Milestone%20Files/Milestone%204/Milestone_4_Report.md) |
+
+### Peer Acknowledgment Matrix
+| Task Owner | Anurag M. | Bhavya J. | Chirag R. | Hitesh | Hitesh B. | Soumyabrata M. |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| **ANURAG MONDAL** | — | [x] | [x] | [x] | [x] | [x] |
+| **BHAVYA JAIN** | [x] | — | [x] | [x] | [x] | [x] |
+| **D CHIRAG RAO** | [x] | [x] | — | [x] | [x] | [x] |
+| **HITESH** | [x] | [x] | [x] | — | [x] | [x] |
+| **HITESH BINJRAWAT** | [x] | [x] | [x] | [x] | — | [x] |
+| **SOUMYABRATA MAHAPATRA** | [x] | [x] | [x] | [x] | [x] | — |
+
