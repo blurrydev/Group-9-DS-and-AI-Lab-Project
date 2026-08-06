@@ -85,7 +85,9 @@ This folder contains the official record of work, task allocation, and peer ackn
 
 ## 📅 Milestone 3: Model Architecture & Pipeline Verification
 
+
 ### Requirements
+* **Milestone Lead:** **HITESH BINJRAWAT**
 * Document the dataset directory structure, including raw and processed data along with training, validation, and test splits.
 * Describe all preprocessing steps applied to the dataset prior to training, including task-specific transformations.
 * Explain the model architecture by highlighting its major components and their interactions.
@@ -102,7 +104,7 @@ This folder contains the official record of work, task allocation, and peer ackn
 | **BHAVYA JAIN** | Justified the choice of model architecture by discussing its strengths, limitations, and comparison with alternative approaches. | [Milestone_3_Report.md](../Milestone%20Files/Milestone%203/Milestone_3_Report.md) |
 | **D CHIRAG RAO** | Presented sample model outputs and documented the loss functions and evaluation metrics used to assess model performance. | [Milestone_3_Report.md](../Milestone%20Files/Milestone%203/Milestone_3_Report.md) |
 | **HITESH** | Described the processed data format expected by the model, including input shapes, tensor dimensions, and embedding/token specifications. | [Milestone_3_Report.md](../Milestone%20Files/Milestone%203/Milestone_3_Report.md) |
-| **HITESH BINJRAWAT** | Explained the model architecture and created a data-flow diagram showing how inputs are transformed into predictions. | [Milestone_3_Report.md](../Milestone%20Files/Milestone%203/Milestone_3_Report.md) |
+| **HITESH BINJRAWAT** (Lead)| Explained the model architecture and created a data-flow diagram showing how inputs are transformed into predictions. | [Milestone_3_Report.md](../Milestone%20Files/Milestone%203/Milestone_3_Report.md) |
 | **SOUMYABRATA MAHAPATRA** | Implemented and validated a small-scale end-to-end pipeline to ensure all workflow components function correctly. | [pipeline_test.py](../pipeline_test.py) |
   
 ### Peer Acknowledgment Matrix
@@ -150,4 +152,42 @@ This folder contains the official record of work, task allocation, and peer ackn
 | **HITESH** | [x] | [x] | [x] | — | [x] | [x] |
 | **HITESH BINJRAWAT** | [x] | [x] | [x] | [x] | — | [x] |
 | **SOUMYABRATA MAHAPATRA** | [x] | [x] | [x] | [x] | [x] | — |
+
+---
+
+## 📅 Milestone 5: Model Evaluation & Analysis
+### Requirements & Lead
+**Milestone Lead:** **HITESH**  
+**Deadline:** 6 August 2026
+
+* Briefly restate the trained model and evaluation pipeline from the previous milestone.
+* Describe the evaluation dataset, including dataset size, composition, and preprocessing performed during evaluation.
+* Specify the evaluation environment, including hardware, software frameworks, library versions, and runtime configuration to ensure reproducibility.
+* Define the evaluation metrics used (e.g., Accuracy, Precision, Recall, F1-score, ROC-AUC, etc.) and justify why they are appropriate for the problem.
+* Present quantitative evaluation results using appropriate tables, comparisons across different models, configurations, and hyperparameter settings.
+* Include evaluation visualizations such as confusion matrices, ROC curves, Precision-Recall curves, and other task-specific evaluation plots.
+* Provide qualitative evaluation results by showcasing representative successful predictions and failure cases.
+* Perform error analysis by identifying common error patterns and discussing possible reasons behind incorrect predictions.
+* Discuss key observations, limitations, and any notable anomalies observed during model evaluation.
+
+### Task Allocation & Work Done
+| Member                    | Specific Tasks Completed                                                                                                                                                                                      
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+| **HITESH** (Lead)         | Led the Milestone 5 activities; coordinated the evaluation process, co-developed evaluation visualizations, performed error analysis, summarized observations and limitations, and compiled the final report. 
+| **ANURAG MONDAL**         | Restated the trained model architecture and evaluation pipeline; documented the evaluation dataset, preprocessing workflow, evaluation environment, and reproducibility details.                             
+| **D CHIRAG RAO**          | Co-documented the evaluation setup and generated evaluation visualizations, including confusion matrix, ROC curve, Precision-Recall curve, and other supporting plots.                                        
+| **BHAVYA JAIN**           | Defined evaluation metrics, justified their selection, and documented metric calculations and interpretations.                                                                                                
+| **SOUMYABRATA MAHAPATRA** | Conducted quantitative evaluation, prepared performance comparison tables, analyzed results across different configurations, and co-performed error analysis and observations.                                
+| **HITESH BINJRAWAT**      | Performed qualitative analysis by reviewing representative model predictions, highlighting successful predictions and failure cases with supporting explanations.                                             
+
+
+### Peer Acknowledgment Matrix
+| Task Owner | Anurag M. | Bhavya J. | Chirag R. | Hitesh | Hitesh B. | Soumyabrata M. |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| **ANURAG MONDAL** | — | [] | [] | [x] | [] | [] |
+| **BHAVYA JAIN** | [] | — | [] | [x] | [] | [] |
+| **D CHIRAG RAO** | [] | [] | — | [x] | [] | [] |
+| **HITESH** | [] | [] | [] | — | [] | [] |
+| **HITESH BINJRAWAT** | [] | [] | [] | [x] | — | [] |
+| **SOUMYABRATA MAHAPATRA** | [] | [] | [] | [x] | [] | — |
 
