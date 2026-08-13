@@ -14,7 +14,7 @@ from pydantic import BaseModel, Field
 
 from rag.compressor import QueryAwareCompressor
 from rag.prompts import answer_prompt
-from rag.retriever import BM25Retriever
+from rag.vector_store import DEFAULT_EMBEDDING_MODEL, FAISSRetriever
 
 
 class QueryRequest(BaseModel):
@@ -45,23 +45,23 @@ class QueryResponse(BaseModel):
     prompt: str
 
 
-def settings() -> tuple[Path, Path, str | None]:
+def settings() -> tuple[Path, Path, Path, str, str | None]:
     """Read deployment paths from the environment, with project-local defaults."""
     return (
         Path(os.getenv("RAG_CHUNKS_PATH", "corpus/processed/chunks.jsonl")),
         Path(os.getenv("RAG_CHECKPOINT_PATH", "checkpoints/final-compressor")),
+        Path(os.getenv("RAG_FAISS_INDEX_PATH", "corpus/index")),
+        os.getenv("RAG_EMBEDDING_MODEL", DEFAULT_EMBEDDING_MODEL),
         os.getenv("RAG_DEVICE"),
     )
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    chunks_path, checkpoint_path, device = settings()
-    if not chunks_path.is_file():
-        raise RuntimeError(f"RAG chunk corpus not found: {chunks_path}")
+    chunks_path, checkpoint_path, index_path, embedding_model, device = settings()
     if not checkpoint_path.is_dir():
         raise RuntimeError(f"RAG model checkpoint not found: {checkpoint_path}")
-    app.state.retriever = BM25Retriever.from_jsonl(chunks_path)
+    app.state.retriever = FAISSRetriever.load(index_path, embedding_model)
     app.state.compressor = QueryAwareCompressor(checkpoint_path, device=device)
     yield
 
@@ -85,7 +85,7 @@ app.add_middleware(
 
 @app.get("/health")
 def health(request: Request) -> dict[str, object]:
-    return {"status": "ok", "chunks_loaded": len(request.app.state.retriever.chunks)}
+    return {"status": "ok", "retriever": "faiss", "chunks_loaded": len(request.app.state.retriever.chunks)}
 
 
 @app.post("/v1/rag/query", response_model=QueryResponse)

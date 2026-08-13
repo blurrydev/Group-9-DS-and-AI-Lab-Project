@@ -166,3 +166,4 @@ data/master_processed_data.jsonl
 
 # Downloaded RAG corpus. The documented builder reproduces these local outputs.
 corpus/processed/
+corpus/index/

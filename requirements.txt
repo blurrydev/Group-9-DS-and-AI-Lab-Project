@@ -3,5 +3,7 @@ transformers
 datasets
 numpy
 scikit-learn
+faiss-cpu
+sentence-transformers
 fastapi
 uvicorn[standard]

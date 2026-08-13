@@ -9,10 +9,14 @@ from pathlib import Path
 from rag.compressor import QueryAwareCompressor
 from rag.prompts import answer_prompt
 from rag.retriever import BM25Retriever
+from rag.vector_store import DEFAULT_EMBEDDING_MODEL, FAISSRetriever
 
 
 def ask(args: argparse.Namespace) -> None:
-    retriever = BM25Retriever.from_jsonl(args.chunks)
+    if args.retriever == "faiss":
+        retriever = FAISSRetriever.load(args.index_dir, args.embedding_model)
+    else:
+        retriever = BM25Retriever.from_jsonl(args.chunks)
     retrieved = retriever.search(args.question, args.top_k)
     if not retrieved:
         raise SystemExit("No matching chunks were retrieved. Add relevant source documents to the corpus.")
@@ -46,6 +50,9 @@ def main() -> None:
     ask_parser = subparsers.add_parser("ask", help="Retrieve and compress contexts for a Hindi question.")
     ask_parser.add_argument("--question", required=True)
     ask_parser.add_argument("--chunks", type=Path, default=Path("corpus/processed/chunks.jsonl"))
+    ask_parser.add_argument("--retriever", choices=("faiss", "bm25"), default="faiss")
+    ask_parser.add_argument("--index-dir", type=Path, default=Path("corpus/index"))
+    ask_parser.add_argument("--embedding-model", default=DEFAULT_EMBEDDING_MODEL)
     ask_parser.add_argument("--checkpoint", type=Path, default=Path("checkpoints/final-compressor"))
     ask_parser.add_argument("--top-k", type=int, default=3)
     ask_parser.add_argument("--max-length", type=int, default=512)

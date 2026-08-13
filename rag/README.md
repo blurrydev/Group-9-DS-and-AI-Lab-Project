@@ -3,10 +3,18 @@
 The first RAG implementation is intentionally local and inspectable:
 
 ```text
-chunks.jsonl → BM25 retrieval → XLM-R query-aware compression → generator-ready prompt
+chunks.jsonl → multilingual embeddings → FAISS retrieval → XLM-R query-aware compression → generator-ready prompt
 ```
 
-Run it after building a substantive corpus:
+Build a FAISS index after building or changing the corpus. The first run downloads
+the multilingual embedding model:
+
+```bash
+uv sync
+uv run python build_index.py --chunks corpus/processed/chunks.jsonl
+```
+
+Then run a query:
 
 ```bash
 python main.py ask \
@@ -21,8 +29,15 @@ chosen instruction-following generator. The generation provider is deliberately
 not hard-coded because its model, credentials, and hosting choice must be made
 separately.
 
-This is a lexical BM25 baseline. Replace it with multilingual embedding retrieval
-and a vector index once the source corpus is sufficiently large and evaluated.
+FAISS uses `sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2` with
+normalized embeddings and inner-product (cosine) similarity. Index files remain
+local in `corpus/index/` and are reproducible from `chunks.jsonl`.
+
+The old BM25 implementation remains available for comparison only:
+
+```bash
+uv run python main.py ask --retriever bm25 --question "..."
+```
 
 ## Frontend API
 
@@ -46,5 +61,6 @@ The frontend queries `POST /v1/rag/query`:
 It returns source metadata, compressed context, and a generator-ready `prompt`.
 Configure frontend origins with `RAG_CORS_ORIGINS`, as a comma-separated list;
 the local defaults are `http://localhost:3000` and `http://localhost:5173`.
-For deployment, `RAG_CHUNKS_PATH`, `RAG_CHECKPOINT_PATH`, and `RAG_DEVICE`
-(`cpu` or `cuda`) can override the local defaults.
+For deployment, `RAG_FAISS_INDEX_PATH`, `RAG_EMBEDDING_MODEL`,
+`RAG_CHECKPOINT_PATH`, and `RAG_DEVICE` (`cpu` or `cuda`) can override the
+local defaults.
