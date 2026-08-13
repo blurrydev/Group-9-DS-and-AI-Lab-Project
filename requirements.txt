@@ -1,5 +1,11 @@
 torch
 transformers
 datasets
+fsspec==2026.6.0
 numpy
 scikit-learn
+fastapi
+uvicorn[standard]
+python-multipart
+openai
+python-dotenv

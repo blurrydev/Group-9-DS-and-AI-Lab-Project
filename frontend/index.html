@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Query-Aware Prompt Compressor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div class="bg-grid"></div>
+  <main class="container">
+    <header class="topbar panel">
+      <div>
+        <h1>Query-Aware Prompt Compressor</h1>
+      </div>
+      <div id="health" class="badge">Checking backend...</div>
+    </header>
+
+    <section class="panel">
+      <h2>Runs</h2>
+      <div class="table-wrap">
+        <table id="runs-table">
+          <thead>
+            <tr>
+              <th>Run</th>
+              <th>Val F1</th>
+              <th>Val Loss</th>
+              <th>Test F1</th>
+              <th>Test Loss</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p class="hint">Click a row to inspect run details.</p>
+    </section>
+
+    <section class="metrics-grid">
+      <article class="panel metric-card"><h3>Validation F1</h3><strong id="val-f1">-</strong></article>
+      <article class="panel metric-card"><h3>Validation Loss</h3><strong id="val-loss">-</strong></article>
+      <article class="panel metric-card"><h3>Test F1</h3><strong id="test-f1">-</strong></article>
+      <article class="panel metric-card"><h3>Test Loss</h3><strong id="test-loss">-</strong></article>
+    </section>
+
+    <section class="charts-grid">
+      <article class="panel chart-panel">
+        <h2>Training Loss</h2>
+        <canvas id="training-chart"></canvas>
+      </article>
+      <article class="panel chart-panel">
+        <h2>Validation Loss</h2>
+        <canvas id="val-loss-chart"></canvas>
+      </article>
+      <article class="panel chart-panel">
+        <h2>Validation F1</h2>
+        <canvas id="val-f1-chart"></canvas>
+      </article>
+    </section>
+
+    <section class="panel artifact-panel">
+      <h2>Key Metrics</h2>
+      <img id="confusion-image" alt="Confusion matrix" />
+      <p id="confusion-empty" class="hint">No visualization image available for this run.</p>
+    </section>
+
+    <section class="panel">
+      <h2>Prediction Demo</h2>
+      <form id="predict-form">
+        <label>
+          Question
+          <textarea id="question" rows="2" required>मुग़ल काल में आवासीय और प्रशासनिक भवन को क्या कहा जाता था?</textarea>
+        </label>
+        <label>
+          Context
+          <textarea id="context" rows="5" required>भारत की सबसे बड़ी सामूहिक मस्जिद है, साथ ही आवासीय तथा प्रशासकीय इमारते हैं जिसे दौलतखाना कहते हैं।</textarea>
+        </label>
+        <button type="submit">Compress Context</button>
+      </form>
+      <div id="predict-error" class="error"></div>
+      <div class="predict-output">
+        <h3>Compressed Text</h3>
+        <pre id="compressed-text">-</pre>
+        <p id="predict-stats" class="hint"></p>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>

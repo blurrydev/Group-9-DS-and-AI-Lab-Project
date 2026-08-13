@@ -204,6 +204,100 @@ This project is configured to use [uv](https://github.com/astral-sh/uv) (a fast 
 
 ---
 
+## Full-Stack App (Frontend + Backend)
+
+This repository now includes a deployable web app:
+
+* Backend: FastAPI (serves experiment APIs and prediction API)
+* Frontend: Static HTML/CSS/JS (MLflow-style dashboard)
+
+### App Structure
+
+```text
+app/
+    main.py              # FastAPI app entrypoint
+    config.py            # Env-based settings
+    artifact_store.py    # Experiment artifact readers (JSON/CSV/PNG)
+    inference.py         # Token classification inference service
+    schemas.py           # Request/response schemas
+frontend/
+    index.html           # Dashboard + prediction UI
+    styles.css
+    app.js
+render.yaml            # Render deployment config
+Dockerfile             # Container build option
+```
+
+### Required Model Artifact
+
+The prediction API expects a fine-tuned Hugging Face token-classification model in:
+
+```text
+submission_artifacts/model/
+```
+
+Expected files (typical):
+* `config.json`
+* `pytorch_model.bin` or `model.safetensors`
+* tokenizer files (`tokenizer.json`, `tokenizer_config.json`, `special_tokens_map.json`, etc.)
+
+If this folder is missing, the dashboard still loads experiment metrics, but `/api/predict` returns `503`.
+
+### Run Locally
+
+1. Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+2. Optional environment variables:
+
+```bash
+# Windows PowerShell
+$env:APP_ENV="development"
+$env:MODEL_DIR="submission_artifacts/model"
+$env:DEVICE="cpu"
+$env:MAX_LENGTH="512"
+```
+
+3. Start the app:
+
+```bash
+uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+```
+
+4. Open:
+
+* `http://localhost:8000/` (frontend)
+* `http://localhost:8000/docs` (FastAPI docs)
+
+### API Endpoints
+
+* `GET /api/health`
+* `GET /api/runs`
+* `GET /api/runs/{run_id}/metrics`
+* `GET /api/runs/{run_id}/history`
+* `GET /api/runs/{run_id}/artifacts`
+* `GET /api/runs/{run_id}/artifacts/{artifact_name}`
+* `POST /api/predict`
+
+### Deploy on Render
+
+This repo includes `render.yaml` configured to run:
+
+```bash
+uvicorn app.main:app --host 0.0.0.0 --port $PORT
+```
+
+Render setup:
+1. Push repo to GitHub.
+2. In Render, create a new Blueprint service from the repo.
+3. Confirm environment variables (especially `MODEL_DIR`).
+4. Ensure model files are included in deployment source or attached as a build/runtime artifact.
+
+---
+
 ## 🤝 Collaboration & Contribution Guidelines
 
 * **Model Weights:** Do **NOT** commit model weights or checkpoints (`.pt`, `.pth`, `.ckpt`, `.safetensors`). Save checkpoints locally inside `checkpoints/` or `outputs/` (configured in `.gitignore`).
