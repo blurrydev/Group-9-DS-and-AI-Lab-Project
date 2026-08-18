@@ -2,6 +2,7 @@ import os
 import json
 import time
 from openai import OpenAI
+from dotenv import load_dotenv
 
 def compress_context(context, question, client):
     system_prompt = """You are a highly efficient text compressor for Hindi text. 
