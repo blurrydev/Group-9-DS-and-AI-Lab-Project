@@ -191,3 +191,37 @@ This folder contains the official record of work, task allocation, and peer ackn
 | **HITESH BINJRAWAT** | [x] | [x] | [x] | [x] | — | [x] |
 | **SOUMYABRATA MAHAPATRA** | [x] | [x] | [x] | [x] | [x] | — |
 
+---
+
+## 📅 Milestone 6: Deployment & Documentation
+### Requirements & Lead
+**Milestone Lead:** ****  
+**Deadline:** 13 August 2026
+
+* Create a clear, audience-friendly presentation covering your project’s objective, methodology, development stages, results, and key learnings, and submit it by next week.
+* Write a detailed technical report documenting the project architecture, implementation, tools, pipeline, results, challenges, and solutions from M1 to M6, and submit it by next week.
+* Prepare a simple, easy-to-understand report explaining the project’s purpose, impact, and functionality for a general audience.
+* Develop a step-by-step user guide with usage instructions, example workflows, and screenshots to help users operate the application easily.
+* Compile a developer guide with setup instructions, dependencies, configurations, implementation notes, and complete code to allow others to reproduce the project.
+* Deploy the project with a stable, user-friendly interface that includes an instruction page, preset examples, and support for custom user uploads.
+
+### Task Allocation & Work Done
+| Member                    | Specific Tasks Completed                                                                                                                                                                                      
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+| **HITESH**                | Worked on creating the Backend, tested the Deployment part and Co-documented the Developer Guide. Working on the Final Technical Report.
+| **ANURAG MONDAL**         | Worked on setting up the RAG pipeline and Co-documented the Non-Technical report. Working on the Final Technical Report.                          
+| **D CHIRAG RAO**          | Worked on creating the Frontend, Tested the Deployment part and Co-documented the User Guide. Working on the Final Technical Report.                                        
+| **BHAVYA JAIN**           | Worked on setting up the RAG pipeline and Co-documented the Non-Technical report. Working on the Final Project Presentation.
+| **SOUMYABRATA MAHAPATRA** | Worked on creating the Frontend, tested the Deployment part and Co-documented the User Guide. Working on the Final Project Presentation.                                
+| **HITESH BINJRAWAT**      | Worked on creating the Backend, tested the Deployment part and Co-documented the Developer Guide. Working on the Final Project Presentation.                                             
+
+
+### Peer Acknowledgment Matrix
+| Task Owner | Anurag M. | Bhavya J. | Chirag R. | Hitesh | Hitesh B. | Soumyabrata M. |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| **ANURAG MONDAL** | — | [x] | [x] | [x] | [x] | [x] |
+| **BHAVYA JAIN** | [x] | — | [x] | [x] | [x] | [x] |
+| **D CHIRAG RAO** | [x] | [x] | — | [x] | [x] | [x] |
+| **HITESH** | [x] | [x] | [x] | — | [x] | [x] |
+| **HITESH BINJRAWAT** | [x] | [x] | [x] | [x] | — | [x] |
+| **SOUMYABRATA MAHAPATRA** | [x] | [x] | [x] | [x] | [x] | — |

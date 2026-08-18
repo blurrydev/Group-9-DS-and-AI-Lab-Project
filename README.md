@@ -204,97 +204,130 @@ This project is configured to use [uv](https://github.com/astral-sh/uv) (a fast 
 
 ---
 
-## Full-Stack App (Frontend + Backend)
+## 🤖 Run the Local Hindi RAG App
 
-This repository now includes a deployable web app:
-
-* Backend: FastAPI (serves experiment APIs and prediction API)
-* Frontend: Static HTML/CSS/JS (MLflow-style dashboard)
-
-### App Structure
+The RAG application retrieves semantically relevant Hindi corpus chunks with
+FAISS, compresses them with the fine-tuned XLM-R token classifier, and returns a
+source-attributed, generator-ready Hindi prompt.
 
 ```text
-app/
-    main.py              # FastAPI app entrypoint
-    config.py            # Env-based settings
-    artifact_store.py    # Experiment artifact readers (JSON/CSV/PNG)
-    inference.py         # Token classification inference service
-    schemas.py           # Request/response schemas
-frontend/
-    index.html           # Dashboard + prediction UI
-    styles.css
-    app.js
-render.yaml            # Render deployment config
-Dockerfile             # Container build option
+Hindi question → multilingual embeddings → FAISS retrieval → XLM-R compression → API response / LLM prompt
 ```
 
-### Required Model Artifact
+### 1. Install dependencies
 
-The prediction API expects a fine-tuned Hugging Face token-classification model in:
+From the repository root, use the locked project environment:
+
+```bash
+uv sync
+```
+
+### 2. Add the trained compression checkpoint
+
+The model weights are intentionally excluded from Git. Extract the final Hugging
+Face-compatible checkpoint into this directory:
 
 ```text
-submission_artifacts/model/
+checkpoints/final-compressor/
+├── config.json
+├── model.safetensors
+├── tokenizer.json
+└── tokenizer_config.json
 ```
 
-Expected files (typical):
-* `config.json`
-* `pytorch_model.bin` or `model.safetensors`
-* tokenizer files (`tokenizer.json`, `tokenizer_config.json`, `special_tokens_map.json`, etc.)
+The application loads this directory through
+`AutoModelForTokenClassification.from_pretrained` and
+`AutoTokenizer.from_pretrained`.
 
-If this folder is missing, the dashboard still loads experiment metrics, but `/api/predict` returns `503`.
+### 3. Build or update the knowledge base
 
-### Run Locally
-
-1. Install dependencies:
+The project includes one reviewed, source-attributed PMJDY seed document. Build
+the local corpus files from it:
 
 ```bash
-pip install -r requirements.txt
+uv run python build_corpus.py \
+  --no-crawl \
+  --seed-documents corpus/seeds/pmjdy.jsonl
 ```
 
-2. Optional environment variables:
+To add more sources, add reviewed JSONL records under `corpus/seeds/`, or use
+the conservative allowlisted crawler in `build_corpus.py`. Each document needs
+at least `document_id`, `title`, `text`, `source_url`, and `language` fields.
+
+### 4. Build the FAISS vector index
+
+Run this each time `corpus/processed/chunks.jsonl` changes:
 
 ```bash
-# Windows PowerShell
-$env:APP_ENV="development"
-$env:MODEL_DIR="submission_artifacts/model"
-$env:DEVICE="cpu"
-$env:MAX_LENGTH="512"
+uv run python build_index.py \
+  --chunks corpus/processed/chunks.jsonl \
+  --index-dir corpus/index
 ```
 
-3. Start the app:
+The first run downloads the multilingual embedding model
+`sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2`. If Hugging Face
+requests authentication or applies a rate limit, run:
 
 ```bash
-uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+uv run hf auth login
 ```
 
-4. Open:
+`corpus/index/` is ignored by Git because it is reproducible from the corpus
+chunks.
 
-* `http://localhost:8000/` (frontend)
-* `http://localhost:8000/docs` (FastAPI docs)
-
-### API Endpoints
-
-* `GET /api/health`
-* `GET /api/runs`
-* `GET /api/runs/{run_id}/metrics`
-* `GET /api/runs/{run_id}/history`
-* `GET /api/runs/{run_id}/artifacts`
-* `GET /api/runs/{run_id}/artifacts/{artifact_name}`
-* `POST /api/predict`
-
-### Deploy on Render
-
-This repo includes `render.yaml` configured to run:
+### 5. Test from the command line
 
 ```bash
-uvicorn app.main:app --host 0.0.0.0 --port $PORT
+uv run python main.py ask \
+  --question "प्रधानमंत्री जन धन योजना में बीमा लाभ क्या है?" \
+  --top-k 3
 ```
 
-Render setup:
-1. Push repo to GitHub.
-2. In Render, create a new Blueprint service from the repo.
-3. Confirm environment variables (especially `MODEL_DIR`).
-4. Ensure model files are included in deployment source or attached as a build/runtime artifact.
+The command prints JSON with retrieved sources, compression metrics, compressed
+context, and a prompt for a generator LLM. It does not generate a final answer;
+selecting and configuring an LLM provider is a separate deployment decision.
+
+### 6. Start the frontend API
+
+```bash
+uv run uvicorn rag.api:app --host 0.0.0.0 --port 8000 --reload
+```
+
+Open interactive documentation at [http://localhost:8000/docs](http://localhost:8000/docs).
+
+Health check:
+
+```bash
+curl http://localhost:8000/health
+```
+
+Query endpoint:
+
+```bash
+curl -X POST http://localhost:8000/v1/rag/query \
+  -H "Content-Type: application/json" \
+  -d '{
+    "question": "प्रधानमंत्री जन धन योजना में बीमा लाभ क्या है?",
+    "top_k": 3,
+    "minimum_retained": 8
+  }'
+```
+
+The endpoint returns `contexts` (with source URLs and compression details) and
+`prompt` (ready for a Hindi-capable generator LLM). Local frontend origins
+`http://localhost:3000` and `http://localhost:5173` are already allowed.
+
+### Configuration
+
+Set these optional environment variables before starting the API when deploying:
+
+| Variable | Default | Purpose |
+| :--- | :--- | :--- |
+| `RAG_FAISS_INDEX_PATH` | `corpus/index` | FAISS index and metadata directory |
+| `RAG_EMBEDDING_MODEL` | multilingual MiniLM model | Sentence-transformer used by the index |
+| `RAG_CHECKPOINT_PATH` | `checkpoints/final-compressor` | Compression-model checkpoint directory |
+| `RAG_DEVICE` | automatic | Set `cpu` or `cuda` |
+| `RAG_CORS_ORIGINS` | `http://localhost:3000,http://localhost:5173` | Comma-separated allowed frontend origins |
 
 ---
 
