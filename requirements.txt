@@ -9,3 +9,4 @@ uvicorn[standard]
 python-multipart
 openai
 python-dotenv
+gradio-client
