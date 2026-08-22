@@ -12,7 +12,7 @@ from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
-from rag.compressor import QueryAwareCompressor
+from rag.compressor import BaseCompressor, CompressionResult, create_compressor
 from rag.prompts import answer_prompt
 from rag.vector_store import DEFAULT_EMBEDDING_MODEL, FAISSRetriever
 
@@ -45,24 +45,34 @@ class QueryResponse(BaseModel):
     prompt: str
 
 
-def settings() -> tuple[Path, Path, Path, str, str | None]:
-    """Read deployment paths from the environment, with project-local defaults."""
-    return (
-        Path(os.getenv("RAG_CHUNKS_PATH", "corpus/processed/chunks.jsonl")),
-        Path(os.getenv("RAG_CHECKPOINT_PATH", "checkpoints/final-compressor")),
-        Path(os.getenv("RAG_FAISS_INDEX_PATH", "corpus/index")),
-        os.getenv("RAG_EMBEDDING_MODEL", DEFAULT_EMBEDDING_MODEL),
-        os.getenv("RAG_DEVICE"),
-    )
+def settings() -> dict[str, object]:
+    """Read deployment paths and model settings from the environment."""
+    return {
+        "chunks_path": Path(os.getenv("RAG_CHUNKS_PATH", "corpus/processed/chunks.jsonl")),
+        "checkpoint_path": Path(os.getenv("RAG_CHECKPOINT_PATH", "checkpoints/final-compressor")),
+        "index_path": Path(os.getenv("RAG_FAISS_INDEX_PATH", "corpus/index")),
+        "embedding_model": os.getenv("RAG_EMBEDDING_MODEL", DEFAULT_EMBEDDING_MODEL),
+        "device": os.getenv("RAG_DEVICE"),
+        "compressor_type": os.getenv("RAG_COMPRESSOR_TYPE", "remote"),
+        "compressor_endpoint": os.getenv("RAG_COMPRESSOR_ENDPOINT") or os.getenv("RAG_HF_SPACE") or "nnnhitesh/TokenCompressor",
+        "hf_token": os.getenv("HF_TOKEN") or os.getenv("RAG_HF_TOKEN"),
+    }
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    chunks_path, checkpoint_path, index_path, embedding_model, device = settings()
-    if not checkpoint_path.is_dir():
-        raise RuntimeError(f"RAG model checkpoint not found: {checkpoint_path}")
+    cfg = settings()
+    index_path = cfg["index_path"]
+    embedding_model = str(cfg["embedding_model"])
+
     app.state.retriever = FAISSRetriever.load(index_path, embedding_model)
-    app.state.compressor = QueryAwareCompressor(checkpoint_path, device=device)
+    app.state.compressor = create_compressor(
+        compressor_type=cfg["compressor_type"],
+        checkpoint=cfg["checkpoint_path"],
+        endpoint=cfg["compressor_endpoint"],
+        hf_token=cfg["hf_token"],
+        device=cfg["device"],
+    )
     yield
 
 
@@ -85,7 +95,14 @@ app.add_middleware(
 
 @app.get("/health")
 def health(request: Request) -> dict[str, object]:
-    return {"status": "ok", "retriever": "faiss", "chunks_loaded": len(request.app.state.retriever.chunks)}
+    compressor = getattr(request.app.state, "compressor", None)
+    compressor_type = type(compressor).__name__ if compressor else "unknown"
+    return {
+        "status": "ok",
+        "retriever": "faiss",
+        "chunks_loaded": len(request.app.state.retriever.chunks),
+        "compressor": compressor_type,
+    }
 
 
 @app.post("/v1/rag/query", response_model=QueryResponse)

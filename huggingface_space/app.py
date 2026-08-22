@@ -1,6 +1,14 @@
 import torch
 import gradio as gr
-import spaces
+
+try:
+    import spaces
+except ImportError:
+    class _SpacesMock:
+        @staticmethod
+        def GPU(func):
+            return func
+    spaces = _SpacesMock()
 
 from transformers import (
     AutoTokenizer,

@@ -8,6 +8,7 @@ dependencies = [
     "datasets",
     "fastapi",
     "fsspec==2026.6.0",
+    "gradio-client>=2.6.0",
     "numpy",
     "openai",
     "pydantic",
