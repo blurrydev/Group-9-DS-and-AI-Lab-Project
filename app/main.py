@@ -101,10 +101,17 @@ def artifact_file(run_id: str, artifact_name: str) -> FileResponse:
 @app.post("/api/predict", response_model=PredictResponse)
 def predict(payload: PredictRequest) -> PredictResponse:
     try:
-        prediction = inference_service.predict(payload.question, payload.context)
-    except RuntimeError as exc:
-        raise HTTPException(status_code=503, detail=str(exc)) from exc
+        prediction = inference_service.predict(
+            question=payload.question,
+            context=payload.context,
+            generate_answer=payload.generate_answer,
+            retrieve_rag=payload.retrieve_rag,
+            top_k=payload.top_k,
+        )
+    except (RuntimeError, ValueError) as exc:
+        raise HTTPException(status_code=400 if isinstance(exc, ValueError) else 503, detail=str(exc)) from exc
     return PredictResponse(**prediction)
+
 
 
 frontend_dir = ROOT_DIR / "frontend"
