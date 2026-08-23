@@ -75,22 +75,28 @@
       </div>
 
       <div class="presets-bar">
-        <span class="preset-label">Sample Questions:</span>
+        <span class="preset-label">RAG Sample Questions:</span>
         <button type="button" class="chip-btn" data-q="प्रधानमंत्री जन धन योजना में बीमा लाभ क्या है?" data-rag="true">
-          💳 जन धन बीमा लाभ (RAG)
+          💳 PMJDY बीमा लाभ
         </button>
-        <button type="button" class="chip-btn" data-q="मुग़ल काल में आवासीय और प्रशासनिक भवन को क्या कहा जाता था?" data-ctx="भारत की सबसे बड़ी सामूहिक मस्जिद है, साथ ही आवासीय तथा प्रशासकीय इमारते हैं जिसे दौलतखाना कहते हैं।">
-          🏛️ दौलतखाना (Custom Context)
+        <button type="button" class="chip-btn" data-q="जन धन खाता कहाँ खोला जा सकता है?" data-rag="true">
+          🏦 खाता खोलने का स्थान
         </button>
-        <button type="button" class="chip-btn" data-q="अमरीकी वैज्ञानिकों ने एच5एन1 वायरस के बारे में क्या पुष्टि की है?" data-ctx="अमरीकी वैज्ञानिकों ने पुष्टि की है कि एच5एन1 वायरस दो अलग विषाणुओं में बदल चुका है, जिससे मनुष्यों के लिए खतरा बढ़ गया है।">
-          🦠 एच5एन1 वायरस (Custom Context)
+        <button type="button" class="chip-btn" data-q="जन धन खाते में न्यूनतम शेष राशि (Minimum Balance) की क्या आवश्यकता है?" data-rag="true">
+          💰 न्यूनतम बैलेंस नियम
+        </button>
+        <button type="button" class="chip-btn" data-q="प्रधानमंत्री जन धन योजना का मुख्य उद्देश्य क्या है?" data-rag="true">
+          🎯 योजना का मुख्य उद्देश्य
+        </button>
+        <button type="button" class="chip-btn" data-q="जन धन योजना के तहत रुपे कार्ड पर कितना दुर्घटना बीमा मिलता है?" data-rag="true">
+          🛡️ रुपे कार्ड दुर्घटना बीमा
         </button>
       </div>
 
       <form id="predict-form">
         <label>
           <strong>User Question (Hindi / Multilingual)</strong>
-          <textarea id="question" rows="2" placeholder="अपना प्रश्न यहाँ लिखें..." required>मुग़ल काल में आवासीय और प्रशासनिक भवन को क्या कहा जाता था?</textarea>
+          <textarea id="question" rows="2" placeholder="अपना प्रश्न यहाँ लिखें..." required>प्रधानमंत्री जन धन योजना में बीमा लाभ क्या है?</textarea>
         </label>
 
         <div class="options-row">
@@ -99,23 +105,24 @@
             <span>✨ Generate Natural Language Answer</span>
           </label>
           <label class="checkbox-label">
-            <input type="checkbox" id="retrieve-rag" />
+            <input type="checkbox" id="retrieve-rag" checked />
             <span>📚 Auto-retrieve from RAG Knowledge Base (FAISS)</span>
           </label>
         </div>
 
-        <label id="context-label">
-          <strong>Context Passage</strong>
-          <textarea id="context" rows="4" placeholder="संदर्भ अनुच्छेद यहाँ चिपकाएँ...">भारत की सबसे बड़ी सामूहिक मस्जिद है, साथ ही आवासीय तथा प्रशासकीय इमारते हैं जिसे दौलतखाना कहते हैं।</textarea>
+        <label id="context-label" style="opacity: 0.6;">
+          <strong>Context Passage (Optional in RAG Mode)</strong>
+          <textarea id="context" rows="3" placeholder="RAG mode active: Knowledge base will be queried automatically."></textarea>
         </label>
 
         <div class="form-actions">
           <button type="submit" id="submit-btn" class="primary-btn">
-            <span id="btn-text">🚀 Compress & Generate Answer</span>
+            <span id="btn-text">🔍 Search RAG & Answer</span>
             <span id="btn-spinner" class="spinner" style="display: none;"></span>
           </button>
         </div>
       </form>
+
 
       <div id="predict-error" class="error"></div>
 

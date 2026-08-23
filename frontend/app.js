@@ -223,7 +223,11 @@ async function initPredictForm() {
     }
   });
 
+  // Trigger initial state
+  retrieveRagCheckbox.dispatchEvent(new Event("change"));
+
   // Preset quick buttons
+
   document.querySelectorAll(".chip-btn").forEach((chip) => {
     chip.addEventListener("click", () => {
       const q = chip.getAttribute("data-q");

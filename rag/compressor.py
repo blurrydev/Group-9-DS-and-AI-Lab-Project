@@ -228,7 +228,9 @@ def create_compressor(
     token = hf_token or os.getenv("HF_TOKEN") or os.getenv("RAG_HF_TOKEN")
 
     if kind == "local":
-        local_checkpoint = checkpoint or os.getenv("RAG_CHECKPOINT_PATH", "checkpoints/final-compressor")
+        local_checkpoint = checkpoint or os.getenv("RAG_CHECKPOINT_PATH")
+        if not local_checkpoint or (isinstance(local_checkpoint, (str, Path)) and not Path(local_checkpoint).exists() and not str(local_checkpoint).startswith("nnnhitesh/")):
+            local_checkpoint = "nnnhitesh/xlm-roberta-prompt-compressor"
         return QueryAwareCompressor(local_checkpoint, max_length=max_length, device=device)
 
     endpoint_target = endpoint_target or DEFAULT_COMPRESSOR_ENDPOINT
@@ -237,4 +239,5 @@ def create_compressor(
             return HFSpaceCompressor(endpoint_target, hf_token=token)
         return HTTPCompressor(endpoint_target)
     return HFSpaceCompressor(endpoint_target, hf_token=token)
+
 
