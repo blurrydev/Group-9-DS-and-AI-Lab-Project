@@ -1,4 +1,4 @@
-"""Command-line entry point for query-aware Hindi RAG retrieval and compression."""
+"""Command-line entry point for query-aware Hindi RAG retrieval, compression, and answering."""
 
 from __future__ import annotations
 
@@ -7,7 +7,13 @@ import json
 import os
 from pathlib import Path
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 from rag.compressor import DEFAULT_COMPRESSOR_ENDPOINT, create_compressor
+from rag.generator import create_generator
+
 from rag.prompts import answer_prompt
 from rag.retriever import BM25Retriever
 from rag.vector_store import DEFAULT_EMBEDDING_MODEL, FAISSRetriever
@@ -50,13 +56,40 @@ def ask(args: argparse.Namespace) -> None:
             }
         )
     generator_contexts = [{**item, "text": item["compression"]["text"]} for item in contexts]
-    print(json.dumps({"question": args.question, "contexts": contexts, "prompt": answer_prompt(args.question, generator_contexts)}, ensure_ascii=False, indent=2))
+    prompt = answer_prompt(args.question, generator_contexts)
+
+    output: dict[str, object] = {
+        "question": args.question,
+        "contexts": contexts,
+        "prompt": prompt,
+    }
+
+    if args.generate:
+        generator = create_generator(
+            api_key=args.generator_api_key,
+            base_url=args.generator_base_url,
+            model=args.generator_model,
+            provider=args.generator_provider,
+            allow_mock_fallback=args.allow_mock_generator,
+        )
+        if generator is None:
+            output["answer"] = (
+                "Error: No generator configured or missing API key. Set OPENAI_API_KEY, API_KEY, "
+                "or RAG_GENERATOR_API_KEY, or pass --generator-api-key."
+            )
+        else:
+            try:
+                output["answer"] = generator.generate(prompt)
+            except Exception as exc:
+                output["answer"] = f"Error generating answer: {exc}"
+
+    print(json.dumps(output, ensure_ascii=False, indent=2))
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     subparsers = parser.add_subparsers(dest="command", required=True)
-    ask_parser = subparsers.add_parser("ask", help="Retrieve and compress contexts for a Hindi question.")
+    ask_parser = subparsers.add_parser("ask", help="Retrieve, compress, and optionally answer a Hindi question.")
     ask_parser.add_argument("--question", required=True)
     ask_parser.add_argument("--chunks", type=Path, default=Path("corpus/processed/chunks.jsonl"))
     ask_parser.add_argument("--retriever", choices=("faiss", "bm25"), default="faiss")
@@ -70,6 +103,13 @@ def main() -> None:
     ask_parser.add_argument("--max-length", type=int, default=512)
     ask_parser.add_argument("--minimum-retained", type=int, default=8)
     ask_parser.add_argument("--device", choices=("cpu", "cuda"))
+    ask_parser.add_argument("--generate", action="store_true", help="Generate final natural language answer using an LLM.")
+    ask_parser.add_argument("--generator-provider", default=os.getenv("RAG_GENERATOR_PROVIDER"), help="Generator provider (openai, gemini, groq, mock).")
+    ask_parser.add_argument("--generator-model", default=os.getenv("RAG_GENERATOR_MODEL"), help="Model name for generator LLM.")
+    ask_parser.add_argument("--generator-api-key", default=None, help="API key for the generator LLM.")
+    ask_parser.add_argument("--generator-base-url", default=None, help="Base URL for OpenAI-compatible endpoint.")
+    ask_parser.add_argument("--allow-mock-generator", action="store_true", help="Fallback to mock generator if no API key is provided.")
+
     ask_parser.set_defaults(func=ask)
     args = parser.parse_args()
     args.func(args)
@@ -77,3 +117,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+

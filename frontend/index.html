@@ -66,25 +66,91 @@
       <p id="confusion-empty" class="hint">No visualization image available for this run.</p>
     </section>
 
-    <section class="panel">
-      <h2>Prediction Demo</h2>
+    <section class="panel demo-panel">
+      <div class="demo-header">
+        <div>
+          <h2>⚡ Interactive Query & Answer Demo</h2>
+          <p class="hint">Ask a question with custom context, or auto-retrieve relevant Hindi documents from the knowledge base.</p>
+        </div>
+      </div>
+
+      <div class="presets-bar">
+        <span class="preset-label">Sample Questions:</span>
+        <button type="button" class="chip-btn" data-q="प्रधानमंत्री जन धन योजना में बीमा लाभ क्या है?" data-rag="true">
+          💳 जन धन बीमा लाभ (RAG)
+        </button>
+        <button type="button" class="chip-btn" data-q="मुग़ल काल में आवासीय और प्रशासनिक भवन को क्या कहा जाता था?" data-ctx="भारत की सबसे बड़ी सामूहिक मस्जिद है, साथ ही आवासीय तथा प्रशासकीय इमारते हैं जिसे दौलतखाना कहते हैं।">
+          🏛️ दौलतखाना (Custom Context)
+        </button>
+        <button type="button" class="chip-btn" data-q="अमरीकी वैज्ञानिकों ने एच5एन1 वायरस के बारे में क्या पुष्टि की है?" data-ctx="अमरीकी वैज्ञानिकों ने पुष्टि की है कि एच5एन1 वायरस दो अलग विषाणुओं में बदल चुका है, जिससे मनुष्यों के लिए खतरा बढ़ गया है।">
+          🦠 एच5एन1 वायरस (Custom Context)
+        </button>
+      </div>
+
       <form id="predict-form">
         <label>
-          Question
-          <textarea id="question" rows="2" required>मुग़ल काल में आवासीय और प्रशासनिक भवन को क्या कहा जाता था?</textarea>
+          <strong>User Question (Hindi / Multilingual)</strong>
+          <textarea id="question" rows="2" placeholder="अपना प्रश्न यहाँ लिखें..." required>मुग़ल काल में आवासीय और प्रशासनिक भवन को क्या कहा जाता था?</textarea>
         </label>
-        <label>
-          Context
-          <textarea id="context" rows="5" required>भारत की सबसे बड़ी सामूहिक मस्जिद है, साथ ही आवासीय तथा प्रशासकीय इमारते हैं जिसे दौलतखाना कहते हैं।</textarea>
+
+        <div class="options-row">
+          <label class="checkbox-label">
+            <input type="checkbox" id="generate-answer" checked />
+            <span>✨ Generate Natural Language Answer</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" id="retrieve-rag" />
+            <span>📚 Auto-retrieve from RAG Knowledge Base (FAISS)</span>
+          </label>
+        </div>
+
+        <label id="context-label">
+          <strong>Context Passage</strong>
+          <textarea id="context" rows="4" placeholder="संदर्भ अनुच्छेद यहाँ चिपकाएँ...">भारत की सबसे बड़ी सामूहिक मस्जिद है, साथ ही आवासीय तथा प्रशासकीय इमारते हैं जिसे दौलतखाना कहते हैं।</textarea>
         </label>
-        <button type="submit">Compress Context</button>
+
+        <div class="form-actions">
+          <button type="submit" id="submit-btn" class="primary-btn">
+            <span id="btn-text">🚀 Compress & Generate Answer</span>
+            <span id="btn-spinner" class="spinner" style="display: none;"></span>
+          </button>
+        </div>
       </form>
+
       <div id="predict-error" class="error"></div>
-      <div class="predict-output">
-        <h3>Compressed Text</h3>
-        <pre id="compressed-text">-</pre>
-        <p id="predict-stats" class="hint"></p>
+
+      <!-- Generated Answer Card -->
+      <div id="answer-card" class="answer-box" style="display: none;">
+        <div class="answer-header">
+          <div class="answer-title">
+            <span class="ai-badge">AI Answer</span>
+            <span id="answer-source-count" class="hint"></span>
+          </div>
+          <button type="button" id="copy-answer-btn" class="secondary-btn small-btn">📋 Copy Answer</button>
+        </div>
+        <div id="answer-text" class="answer-content"></div>
       </div>
+
+      <!-- RAG Sources Section -->
+      <div id="sources-section" class="sources-box" style="display: none;">
+        <h3>Retrieved Sources</h3>
+        <div id="sources-list" class="sources-grid"></div>
+      </div>
+
+      <!-- Compression Stats and Output -->
+      <div class="predict-output">
+        <div class="output-header">
+          <h3>Retained / Compressed Context</h3>
+          <div id="predict-stats" class="stats-badges"></div>
+        </div>
+        <pre id="compressed-text">-</pre>
+      </div>
+
+      <!-- Prompt Inspector -->
+      <details id="prompt-details" class="prompt-inspector" style="display: none;">
+        <summary>🔍 Inspect Assembled LLM Prompt</summary>
+        <pre id="prompt-text"></pre>
+      </details>
     </section>
   </main>
 

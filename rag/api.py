@@ -8,11 +8,17 @@ from dataclasses import asdict
 from pathlib import Path
 from typing import Annotated
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 from fastapi import FastAPI, HTTPException, Query, Request
+
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
 from rag.compressor import BaseCompressor, CompressionResult, create_compressor
+from rag.generator import BaseGenerator, create_generator
 from rag.prompts import answer_prompt
 from rag.vector_store import DEFAULT_EMBEDDING_MODEL, FAISSRetriever
 
@@ -21,6 +27,7 @@ class QueryRequest(BaseModel):
     question: str = Field(min_length=2, max_length=1_000, description="Hindi or multilingual user question.")
     top_k: int = Field(default=3, ge=1, le=10)
     minimum_retained: int = Field(default=8, ge=0, le=100)
+    generate: bool = Field(default=True, description="Whether to generate the final LLM answer using the compressed prompt.")
 
 
 class CompressionResponse(BaseModel):
@@ -43,6 +50,7 @@ class QueryResponse(BaseModel):
     question: str
     contexts: list[ContextResponse]
     prompt: str
+    answer: str | None = Field(default=None, description="Generated natural language Hindi answer.")
 
 
 def settings() -> dict[str, object]:
@@ -56,6 +64,10 @@ def settings() -> dict[str, object]:
         "compressor_type": os.getenv("RAG_COMPRESSOR_TYPE", "remote"),
         "compressor_endpoint": os.getenv("RAG_COMPRESSOR_ENDPOINT") or os.getenv("RAG_HF_SPACE") or "nnnhitesh/TokenCompressor",
         "hf_token": os.getenv("HF_TOKEN") or os.getenv("RAG_HF_TOKEN"),
+        "generator_provider": os.getenv("RAG_GENERATOR_PROVIDER"),
+        "generator_model": os.getenv("RAG_GENERATOR_MODEL"),
+        "generator_api_key": os.getenv("RAG_GENERATOR_API_KEY") or os.getenv("OPENAI_API_KEY") or os.getenv("API_KEY"),
+        "generator_base_url": os.getenv("RAG_GENERATOR_BASE_URL") or os.getenv("OPENAI_BASE_URL") or os.getenv("BASE_URL"),
     }
 
 
@@ -73,13 +85,20 @@ async def lifespan(app: FastAPI):
         hf_token=cfg["hf_token"],
         device=cfg["device"],
     )
+    app.state.generator = create_generator(
+        api_key=cfg["generator_api_key"],
+        base_url=cfg["generator_base_url"],
+        model=cfg["generator_model"],
+        provider=cfg["generator_provider"],
+        allow_mock_fallback=False,
+    )
     yield
 
 
 app = FastAPI(
     title="Indic-LLMLingua Hindi RAG API",
     version="0.1.0",
-    description="Retrieves and query-aware compresses Hindi RAG context.",
+    description="Retrieves, query-aware compresses, and answers Hindi RAG questions.",
     lifespan=lifespan,
 )
 
@@ -97,17 +116,20 @@ app.add_middleware(
 def health(request: Request) -> dict[str, object]:
     compressor = getattr(request.app.state, "compressor", None)
     compressor_type = type(compressor).__name__ if compressor else "unknown"
+    generator = getattr(request.app.state, "generator", None)
+    generator_type = type(generator).__name__ if generator else "none"
     return {
         "status": "ok",
         "retriever": "faiss",
         "chunks_loaded": len(request.app.state.retriever.chunks),
         "compressor": compressor_type,
+        "generator": generator_type,
     }
 
 
 @app.post("/v1/rag/query", response_model=QueryResponse)
 def query_rag(payload: QueryRequest, request: Request) -> QueryResponse:
-    """Retrieve documents and compress them for a frontend or generator service."""
+    """Retrieve documents, compress them, and optionally generate an answer."""
     results = request.app.state.retriever.search(payload.question, payload.top_k)
     if not results:
         raise HTTPException(status_code=404, detail="No relevant context was found in the knowledge base.")
@@ -128,4 +150,19 @@ def query_rag(payload: QueryRequest, request: Request) -> QueryResponse:
         )
         contexts.append(context)
         generator_contexts.append({"title": context.title, "source_url": context.source_url, "text": context.compression.text})
-    return QueryResponse(question=payload.question, contexts=contexts, prompt=answer_prompt(payload.question, generator_contexts))
+
+    prompt = answer_prompt(payload.question, generator_contexts)
+    answer = None
+
+    if payload.generate and getattr(request.app.state, "generator", None) is not None:
+        try:
+            answer = request.app.state.generator.generate(prompt)
+        except Exception as exc:
+            answer = f"Error generating answer: {exc}"
+
+    return QueryResponse(
+        question=payload.question,
+        contexts=contexts,
+        prompt=prompt,
+        answer=answer,
+    )

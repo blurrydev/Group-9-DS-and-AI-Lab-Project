@@ -54,7 +54,10 @@ class RunArtifactsResponse(BaseModel):
 
 class PredictRequest(BaseModel):
     question: str = Field(min_length=1, max_length=3000)
-    context: str = Field(min_length=1, max_length=50000)
+    context: str | None = Field(default=None, max_length=50000)
+    generate_answer: bool = Field(default=True, description="Generate final answer with LLM")
+    retrieve_rag: bool = Field(default=False, description="Automatically retrieve relevant context from knowledge base")
+    top_k: int = Field(default=3, ge=1, le=10)
 
 
 class PredictStats(BaseModel):
@@ -67,3 +70,7 @@ class PredictResponse(BaseModel):
     compressed_text: str
     kept_tokens: list[str]
     stats: PredictStats
+    answer: str | None = None
+    prompt: str | None = None
+    sources: list[dict[str, Any]] | None = None
+
