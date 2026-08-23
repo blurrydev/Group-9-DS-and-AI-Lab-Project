@@ -205,3 +205,11 @@ For sharing with others:
 
 1. Use Docker if they want a reproducible local setup
 2. Use Render if they want a hosted version
+
+### Training Pipeline
+
+![Model Pipeline](image.png)
+
+### Model Architecture
+
+![alt text](image-1.png)
