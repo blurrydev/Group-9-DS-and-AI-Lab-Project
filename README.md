@@ -7,6 +7,8 @@
 
 A deep learning project codebase for the **Data Science & AI Labs** course at **IIT Madras (Group 9)**. This repository implements **Indic-LLMLingua**, a cross-lingual query-aware token classification pipeline for context compression in Hindi Retrieval-Augmented Generation (RAG) applications.
 
+For cloud hosting steps (Render free tier, Docker, env setup), see [DEPLOYMENT.md](DEPLOYMENT.md).
+
 ---
 
 ## 📖 Project Objective
