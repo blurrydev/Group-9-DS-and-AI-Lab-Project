@@ -109,42 +109,6 @@ tbody tr.selected {
   color: var(--muted);
 }
 
-.metrics-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 12px;
-}
-
-.metric-card strong {
-  font-size: 2rem;
-  color: var(--brand);
-}
-
-.charts-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
-}
-
-.chart-panel {
-  position: relative;
-  height: 300px;
-  min-height: 300px;
-}
-
-.chart-panel canvas {
-  width: 100% !important;
-  height: 100% !important;
-  display: block;
-}
-
-.artifact-panel img {
-  width: min(500px, 100%);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  display: none;
-}
-
 /* Interactive Demo Styling */
 .demo-panel {
   display: grid;
@@ -461,28 +425,12 @@ textarea:focus {
 }
 
 @media (max-width: 980px) {
-  .metrics-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .charts-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .chart-panel {
-    height: 280px;
-    min-height: 280px;
-  }
 }
 
 @media (max-width: 640px) {
   .topbar {
     flex-direction: column;
     align-items: flex-start;
-  }
-
-  .metrics-grid {
-    grid-template-columns: 1fr;
   }
 }
 

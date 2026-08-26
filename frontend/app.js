@@ -1,17 +1,6 @@
 const state = {
   runs: [],
   selectedRun: null,
-  charts: {
-    training: null,
-    valLoss: null,
-    valF1: null,
-  },
-};
-
-const palette = {
-  lineA: "#0f8b8d",
-  lineB: "#f28f3b",
-  lineC: "#1f5f99",
 };
 
 function fmt(value, digits = 3) {
@@ -62,110 +51,8 @@ function renderRunsTable() {
   });
 }
 
-function renderCards(metrics) {
-  const val = metrics.validation || {};
-  const test = metrics.test || {};
-
-  document.getElementById("val-f1").textContent = fmt(val.eval_f1);
-  document.getElementById("val-loss").textContent = fmt(val.eval_loss);
-  document.getElementById("test-f1").textContent = fmt(test.eval_f1);
-  document.getElementById("test-loss").textContent = fmt(test.eval_loss);
-}
-
-function createLineChart(canvasId, label, points, color) {
-  const element = document.getElementById(canvasId);
-  return new Chart(element, {
-    type: "line",
-    data: {
-      datasets: [
-        {
-          label,
-          data: points,
-          borderColor: color,
-          backgroundColor: color,
-          tension: 0.25,
-        },
-      ],
-    },
-    options: {
-      responsive: true,
-      resizeDelay: 150,
-      animation: {
-        duration: 220,
-      },
-      parsing: false,
-      scales: {
-        x: { type: "linear" },
-      },
-      plugins: {
-        legend: { display: false },
-      },
-      maintainAspectRatio: false,
-    },
-  });
-}
-
-function destroyCharts() {
-  Object.keys(state.charts).forEach((key) => {
-    if (state.charts[key]) {
-      state.charts[key].destroy();
-      state.charts[key] = null;
-    }
-  });
-}
-
-function renderCharts(history) {
-  destroyCharts();
-  state.charts.training = createLineChart(
-    "training-chart",
-    "Training Loss",
-    history.training_loss || [],
-    palette.lineA
-  );
-  state.charts.valLoss = createLineChart(
-    "val-loss-chart",
-    "Validation Loss",
-    history.validation_loss || [],
-    palette.lineB
-  );
-  state.charts.valF1 = createLineChart(
-    "val-f1-chart",
-    "Validation F1",
-    history.validation_f1 || [],
-    palette.lineC
-  );
-}
-
-function renderConfusionImage(runId, artifacts) {
-  const image = document.getElementById("confusion-image");
-  const empty = document.getElementById("confusion-empty");
-  const preferredByRun = {
-    hyperparameter_tuning: "hp_experiment_1.png",
-  };
-
-  const preferred = preferredByRun[runId];
-  const candidate = (preferred && artifacts.includes(preferred) ? preferred : null)
-    || artifacts.find((name) => name.toLowerCase().includes("confusion") && name.endsWith(".png"))
-    || artifacts.find((name) => name.toLowerCase().endsWith(".png"));
-  if (!candidate) {
-    image.style.display = "none";
-    empty.style.display = "block";
-    return;
-  }
-  image.src = `/api/runs/${runId}/artifacts/${candidate}`;
-  image.style.display = "block";
-  empty.style.display = "none";
-}
-
-async function loadSelectedRun(runId) {
-  const [metrics, history, artifacts] = await Promise.all([
-    fetchJson(`/api/runs/${runId}/metrics`),
-    fetchJson(`/api/runs/${runId}/history`),
-    fetchJson(`/api/runs/${runId}/artifacts`),
-  ]);
-  renderCards(metrics);
-  renderCharts(history);
-  renderConfusionImage(runId, artifacts.artifacts || []);
+async function loadSelectedRun(_runId) {
+  // Row selection is still tracked for highlighting, but no extra details are rendered.
 }
 
 async function loadRuns() {
