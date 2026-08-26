@@ -1,8 +1,3 @@
-const state = {
-  runs: [],
-  selectedRun: null,
-};
-
 function fmt(value, digits = 3) {
   if (value === null || value === undefined || Number.isNaN(value)) return "-";
   return Number(value).toFixed(digits);
@@ -26,43 +21,6 @@ function updateHealthBadge(health) {
   }
   el.textContent = `Backend OK | Model ready`;
   el.style.background = "#e9f9f4";
-}
-
-function renderRunsTable() {
-  const tbody = document.querySelector("#runs-table tbody");
-  tbody.innerHTML = "";
-
-  state.runs.forEach((run) => {
-    const tr = document.createElement("tr");
-    if (run.id === state.selectedRun) tr.classList.add("selected");
-    tr.innerHTML = `
-      <td>${run.name}</td>
-      <td>${fmt(run.validation_f1)}</td>
-      <td>${fmt(run.validation_loss)}</td>
-      <td>${fmt(run.test_f1)}</td>
-      <td>${fmt(run.test_loss)}</td>
-    `;
-    tr.addEventListener("click", async () => {
-      state.selectedRun = run.id;
-      renderRunsTable();
-      await loadSelectedRun(run.id);
-    });
-    tbody.appendChild(tr);
-  });
-}
-
-async function loadSelectedRun(_runId) {
-  // Row selection is still tracked for highlighting, but no extra details are rendered.
-}
-
-async function loadRuns() {
-  const payload = await fetchJson("/api/runs");
-  state.runs = payload.runs || [];
-  state.selectedRun = state.runs.length > 0 ? state.runs[0].id : null;
-  renderRunsTable();
-  if (state.selectedRun) {
-    await loadSelectedRun(state.selectedRun);
-  }
 }
 
 async function initPredictForm() {
@@ -245,7 +203,6 @@ async function bootstrap() {
   try {
     const health = await fetchJson("/api/health");
     updateHealthBadge(health);
-    await loadRuns();
     await initPredictForm();
   } catch (error) {
     const healthEl = document.getElementById("health");
